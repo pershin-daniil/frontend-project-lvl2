@@ -1,0 +1,32 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Differnces Generator as the second project on Hexlet ",
+  "bin": {
+    "gendiff": "gendiff.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pppershin/frontend-project-lvl2.git"
+  },
+  "author": "Daniil Pershin <pershin.daniil.e@gmail.com> (https://github.com/pppershin)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pppershin/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/pppershin/frontend-project-lvl2#readme",
+  "dependencies": {
+    "commander": "^9.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.19.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "jest": "^28.1.2"
+  }
+}
