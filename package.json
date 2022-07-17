@@ -6,9 +6,9 @@
   "bin": {
     "gendiff": "gendiff.js"
   },
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "npx jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/pppershin/frontend-project-lvl2#readme",
   "dependencies": {
-    "commander": "^9.3.0"
+    "commander": "^9.3.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "eslint": "^8.19.0",
