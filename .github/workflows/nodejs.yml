@@ -19,9 +19,9 @@ jobs:
       - run: make lint
       - run: make test
       - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v3
-          env:
-            21f9fca6bf867da3977c02453deaaa08a48b8c5d2c34eff8a6e7abf1e97f6646: ${{ secrets.21f9fca6bf867da3977c02453deaaa08a48b8c5d2c34eff8a6e7abf1e97f6646 }}
+      - uses: paambaati/codeclimate-action@v3
+        env:
+         CODECLIMATE: ${{ secrets.CODECLIMATE }}
         with:
           coverageCommand: make test-coverage
           debug: true
