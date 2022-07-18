@@ -1,9 +1,13 @@
 env:
   browser: true
   es2021: true
+  jest: true
 extends:
   - airbnb-base
 parserOptions:
   ecmaVersion: latest
   sourceType: module
-rules: {}
+rules: {
+  # разрешает подчёркивание в именах только для двух констант
+  no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
+}
