@@ -14,10 +14,10 @@ const getType = (obj) => obj.type;
 const getName = (obj) => obj.name;
 
 const getPathFile = (filepath) => path.resolve(process.cwd(), filepath).trim();
-const readFile = (filepath) => fs.readFileSync(getPathFile(filepath), 'utf-8');
-export const getFile = (filepath) => JSON.parse(readFile(filepath));
+export const readFile = (filepath) => fs.readFileSync(getPathFile(filepath), 'utf-8');
+const getFile = (filepath) => JSON.parse(readFile(filepath));
 
-const gendiff = (filepath1, filepath2) => {
+export const gendiff = (filepath1, filepath2) => {
   const file1 = getFile(filepath1);
   const file2 = getFile(filepath2);
 
@@ -87,4 +87,3 @@ const gendiff = (filepath1, filepath2) => {
   });
   return `{\n${resultLines.join('\n')}\n}`;
 };
-export default gendiff;

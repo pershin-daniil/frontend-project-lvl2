@@ -1,38 +1,17 @@
-import { fileURLToPath } from 'url';
-import path from 'path';
-import gendiff from '../src/gendiff';
+import { gendiff, readFile } from '../src/gendiff';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const getRelativePath = (filename) => `__fixtures__/${filename}`;
 
-const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
+describe('test with different files', () => {
+  const jsonFile1 = getRelativePath('file1.json');
+  const jsonFile2 = getRelativePath('file2.json');
 
-test('Compare file1 and file2', () => {
-  const file1 = getFixturePath('file1.json');
-  const file2 = getFixturePath('file2.json');
-  const actualResult = gendiff(file1, file2);
-  const mustBeResult = `{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}`;
-  expect(actualResult).toBe(mustBeResult);
-});
+  const actual = {
+    json: (formatName) => gendiff(jsonFile1, jsonFile2)
+  };
 
-test('Compare file2 and file1', () => {
-  const file1 = getFixturePath('file1.json');
-  const file2 = getFixturePath('file2.json');
-  const actualResult = gendiff(file2, file1);
-  const mustBeResult = `{
-  + follow: false
-    host: hexlet.io
-  + proxy: 123.234.53.22
-  - timeout: 20
-  + timeout: 50
-  - verbose: true
-}`;
-  expect(actualResult).toBe(mustBeResult);
+  test.each(['json'])('in %s format', (formatName) => {
+    const expected = readFile(getRelativePath(formatName));
+    expect(actual.json(formatName)).toBe(expected);
+  });
 });
