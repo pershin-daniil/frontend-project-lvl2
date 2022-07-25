@@ -7,11 +7,11 @@ describe('test with different files', () => {
   const jsonFile2 = getRelativePath('file2.json');
 
   const actual = {
-    json: (formatName) => gendiff(jsonFile1, jsonFile2)
+    json: () => gendiff(jsonFile1, jsonFile2),
   };
 
   test.each(['json'])('in %s format', (formatName) => {
     const expected = readFile(getRelativePath(formatName));
-    expect(actual.json(formatName)).toBe(expected);
+    expect(actual.json()).toBe(expected);
   });
 });

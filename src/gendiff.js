@@ -13,8 +13,8 @@ const getValue = (obj, key) => obj[key];
 const getType = (obj) => obj.type;
 const getName = (obj) => obj.name;
 
-const getPathFile = (filepath) => path.resolve(process.cwd(), filepath).trim();
-export const readFile = (filepath) => fs.readFileSync(getPathFile(filepath), 'utf-8');
+const getFullPath = (filepath) => path.resolve(process.cwd(), filepath);
+export const readFile = (filepath) => fs.readFileSync(getFullPath(filepath), 'utf-8').trim();
 const getFile = (filepath) => JSON.parse(readFile(filepath));
 
 export const gendiff = (filepath1, filepath2) => {
