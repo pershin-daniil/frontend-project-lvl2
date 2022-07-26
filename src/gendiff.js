@@ -1,25 +1,39 @@
 import fs from 'fs';
+import yaml from 'js-yaml';
 import path from 'path';
 import _ from 'lodash';
-
-const spaces = {
-  plus: '  + ',
-  minus: '  - ',
-  empty: '    ',
-};
+import { parser, getValue } from './parser.js';
 
 const getKeys = (file) => Object.keys(file);
-const getValue = (obj, key) => obj[key];
-const getType = (obj) => obj.type;
-const getName = (obj) => obj.name;
+const getExtName = (filename) => path.extname(filename);
 
 const getFullPath = (filepath) => path.resolve(process.cwd(), filepath);
 export const readFile = (filepath) => fs.readFileSync(getFullPath(filepath), 'utf-8').trim();
-const getFile = (filepath) => JSON.parse(readFile(filepath));
+
+const FILE_TYPES_PARSER = {
+  json: (filepath) => JSON.parse(readFile(filepath)),
+  yaml: (filepath) => yaml.load(readFile(filepath)),
+};
+
+const FILE_TYPE = {
+  JSON: '.json',
+  YAML: ['.yml', '.yaml'],
+};
 
 export const gendiff = (filepath1, filepath2) => {
-  const file1 = getFile(filepath1);
-  const file2 = getFile(filepath2);
+  let file1;
+  let file2;
+  const ext2 = getExtName(filepath2);
+  const ext1 = getExtName(filepath1);
+
+  if (ext1 === FILE_TYPE.JSON && ext2 === FILE_TYPE.JSON) {
+    file1 = FILE_TYPES_PARSER.json(filepath1);
+    file2 = FILE_TYPES_PARSER.json(filepath2);
+  }
+  if (FILE_TYPE.YAML.includes(ext1) && FILE_TYPE.YAML.includes(ext2)) {
+    file1 = FILE_TYPES_PARSER.yaml(filepath1);
+    file2 = FILE_TYPES_PARSER.yaml(filepath2);
+  }
 
   const keys1 = getKeys(file1);
   const keys2 = getKeys(file2);
@@ -63,27 +77,6 @@ export const gendiff = (filepath1, filepath2) => {
     }
     return result;
   });
-  const resultLines = [];
-  result.forEach((line) => {
-    const type = getType(line);
-    const name = getName(line);
-    switch (type) {
-      case 'deleted':
-        resultLines.push(`${spaces.minus}${name}: ${getValue(line, 'value')}`);
-        break;
-      case 'unchanged':
-        resultLines.push(`${spaces.empty}${name}: ${getValue(line, 'value')}`);
-        break;
-      case 'added':
-        resultLines.push(`${spaces.plus}${name}: ${getValue(line, 'value')}`);
-        break;
-      case 'changed':
-        resultLines.push(`${spaces.minus}${name}: ${getValue(line, 'value1')}`);
-        resultLines.push(`${spaces.plus}${name}: ${getValue(line, 'value2')}`);
-        break;
-      default:
-        break;
-    }
-  });
-  return `{\n${resultLines.join('\n')}\n}`;
+
+  return parser(result);
 };
