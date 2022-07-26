@@ -29,3 +29,5 @@ And now you can use gendiff.
       -V, --version        output the version number
       -f, --format <type>  output format
       -h, --help           display help for command
+
+[![asciicast](https://asciinema.org/a/510966.svg)](https://asciinema.org/a/510966)
