@@ -1,4 +1,5 @@
-import { gendiff, readFile } from '../src/gendiff';
+import { gendiff } from '../src/gendiff';
+import { readFile } from '../src/utils';
 
 const getRelativePath = (filename) => `__fixtures__/${filename}`;
 

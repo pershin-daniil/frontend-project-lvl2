@@ -8,7 +8,7 @@ const spaces = {
 const getType = (obj) => obj.type;
 const getName = (obj) => obj.name;
 
-export const parser = (tree) => {
+export const format = (tree) => {
   const resultLines = [];
   tree.forEach((line) => {
     const type = getType(line);
