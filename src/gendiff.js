@@ -1,10 +1,9 @@
 import yaml from 'js-yaml';
-import _ from 'lodash';
-import { getExtName, readFile } from './utils.js'
-import { format, getValue } from './formater.js';
-import { FILE_TYPE } from './constants.js';
-
-const getKeys = (file) => Object.keys(file);
+import {
+  getExtName, readFile, getUniqueKeys, isObjects, isEqual,
+} from './utils.js';
+import format from './formaters/index.js';
+import { FILE_TYPE, DIFF_TYPE } from './constants.js';
 
 const parsers = {
   [FILE_TYPE.JSON]: JSON.parse,
@@ -13,55 +12,47 @@ const parsers = {
 };
 
 const parse = (content, typeName) => parsers[typeName](content);
+const isNotEqual = (value1, value2) => !isEqual(value1, value2);
 
+const getDiffType = (value1, value2) => {
+  switch (true) {
+    case value1 === undefined:
+      return DIFF_TYPE.ADDED;
+    case value2 === undefined:
+      return DIFF_TYPE.DELETED;
+    case isObjects([value1, value2]):
+      return DIFF_TYPE.NESTED;
+    case isNotEqual(value1, value2):
+      return DIFF_TYPE.UPDATED;
+    case value1 === value2:
+      return DIFF_TYPE.NO_DIFF;
+    default:
+      throw new Error(`Unexpected case when trying to compare ${value1} and ${value2}`);
+  }
+};
 
-export const gendiff = (filepath1, filepath2) => {
-
+export default (filepath1, filepath2, formatName) => {
   const data1 = parse(readFile(filepath1), getExtName(filepath1));
   const data2 = parse(readFile(filepath2), getExtName(filepath2));
 
-  const keys1 = getKeys(data1);
-  const keys2 = getKeys(data2);
+  const buildTree = (value1, value2) => {
+    if (!isObjects([value1, value2])) return ([]);
 
-  const sortedKeys = _.sortBy(_.union(keys1, keys2));
-
-  let result = {};
-
-  result = sortedKeys.map((key) => {
-    const value1 = getValue(data1, key);
-    const value2 = getValue(data2, key);
-
-    if (_.has(data1, key) && _.has(data2, key)) {
-      if (value1 === value2) {
-        return {
-          name: key,
-          value: value1,
-          type: 'unchanged',
-        };
-      }
+    const toTreeNode = (key) => {
+      const value = value1[key];
+      const subValue = value2[key];
       return {
-        name: key,
-        value1,
-        value2,
-        type: 'changed',
+        key,
+        value,
+        subValue,
+        type: getDiffType(value, subValue),
+        children: buildTree(value, subValue),
       };
-    }
-    if (!_.has(data2, key)) {
-      return {
-        name: key,
-        value: value1,
-        type: 'deleted',
-      };
-    }
-    if (!_.has(data1, key) && _.has(data2, key)) {
-      return {
-        name: key,
-        value: value2,
-        type: 'added',
-      };
-    }
-    return result;
-  });
+    };
+    const sortedKeys = getUniqueKeys([value1, value2]);
+    return sortedKeys.map(toTreeNode);
+  };
 
-  return format(result);
+  const innerTree = buildTree(data1, data2);
+  return format(innerTree, formatName);
 };
