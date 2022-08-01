@@ -10,7 +10,7 @@ program
   .version('0.1.0')
   .arguments('<filepath1> <filepath2>')
   .option('-f, --format <type>', 'output format')
-  .action((filepath1, filepath2,  { format } ) => {
+  .action((filepath1, filepath2,  { format }) => {
     console.log(gendiff(filepath1, filepath2, format));
   });
 program.parse();
