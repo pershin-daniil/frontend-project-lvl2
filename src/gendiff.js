@@ -52,7 +52,6 @@ export default (filepath1, filepath2, formatName) => {
     const sortedKeys = getUniqueKeys([value1, value2]);
     return sortedKeys.map(toTreeNode);
   };
-
   const innerTree = buildTree(data1, data2);
   return format(innerTree, formatName);
 };
