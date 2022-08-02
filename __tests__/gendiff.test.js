@@ -1,5 +1,6 @@
 import gendiff from '../src/gendiff';
 import { readFile } from '../src/utils';
+import { availableFormats } from '../src/formaters/index.js';
 
 const getRelativePath = (filename) => `__fixtures__/${filename}`;
 
@@ -11,17 +12,12 @@ describe('test with different files', () => {
   const yamlFile2 = getRelativePath('file2.yaml');
 
   const actual = {
-    json: () => gendiff(jsonFile1, jsonFile2),
-    yaml: () => gendiff(yamlFile1, yamlFile2),
+    json: (formatName) => gendiff(jsonFile1, jsonFile2, formatName),
+    yaml: (formatName) => gendiff(yamlFile1, yamlFile2, formatName),
   };
-
-  test('simple test for JSON', () => {
-    const expectedJSON = readFile(getRelativePath('json'));
-    expect(actual.json()).toBe(expectedJSON);
-  });
-
-  test('simple test for YAML', () => {
-    const expectedYAML = readFile(getRelativePath('yaml'));
-    expect(actual.yaml()).toBe(expectedYAML);
+  test.each(availableFormats)('in %s format', (formatName) => {
+    const expected = readFile(getRelativePath(formatName));
+    expect(actual.json(formatName)).toBe(expected);
+    expect(actual.yaml(formatName)).toBe(expected);
   });
 });

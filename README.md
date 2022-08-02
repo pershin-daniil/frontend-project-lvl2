@@ -20,6 +20,14 @@ Then use Make to install gendiff localy.
 
 And now you can use gendiff.
 
+### Installation 
+
+[![asciicast](https://asciinema.org/a/510966.svg)](https://asciinema.org/a/510966)
+
+## Usage
+
+Check `--help` or `-h` for manual.
+
     gendiff -h
     Usage: gendiff [options] <filepath1> <filepath2>
 
@@ -30,4 +38,6 @@ And now you can use gendiff.
       -f, --format <type>  output format
       -h, --help           display help for command
 
-[![asciicast](https://asciinema.org/a/510966.svg)](https://asciinema.org/a/510966)
+### Usage process
+
+[![asciicast](https://asciinema.org/a/512158.svg)](https://asciinema.org/a/512158)
