@@ -1,4 +1,4 @@
-import { strict as assert } from 'node:assert';
+import { strict as assert } from 'assert';
 import { FORMAT_NAME } from '../constants.js';
 import stylish from './stylish.js';
 import plain from './plain.js';
