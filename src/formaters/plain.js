@@ -25,4 +25,4 @@ const format = (innerTree, ancestors = []) => {
   return _.compact(_.flatten(result)).join('\n');
 };
 
-export default format;
+export default (innerTree = []) => (innerTree.length ? format(innerTree) : '');

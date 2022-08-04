@@ -21,3 +21,10 @@ describe('test with different files', () => {
       expect(actual).toEqual(expected);
     });
 });
+test('with empty files', () => {
+  const filePath1 = getAbsolutPath('empty.json');
+  const filePath2 = getAbsolutPath('empty.yaml');
+  const actual = gendiff(filePath1, filePath2);
+  const expected = readFile(getAbsolutPath('empty'));
+  expect(actual).toEqual(expected);
+});

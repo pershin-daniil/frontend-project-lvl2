@@ -8,7 +8,6 @@ export const DIFF_TYPE = {
 export const FILE_TYPE = {
   JSON: 'json',
   YAML: 'yaml',
-  YML: 'yml',
 };
 export const FORMAT_NAME = {
   STYLISH: 'stylish',

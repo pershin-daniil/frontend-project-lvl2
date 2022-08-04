@@ -39,4 +39,4 @@ const format = (nodes, depth) => {
   const output = nodes.map(toStylish);
   return wrap(output, depth);
 };
-export default (innerTree) => format(innerTree, 0);
+export default (innerTree = []) => (innerTree.length ? format(innerTree, 0) : '');
