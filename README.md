@@ -14,9 +14,13 @@ To install gendiff, you need to clone repository first.
 
     git clone git@github.com:pppershin/frontend-project-lvl2.git
 
-Then use Make to install gendiff localy.
+Then use Make to install dependencies.
 
     make install
+
+To install locally and test `gendiff`.
+
+    make link
 
 And now you can use gendiff 👍
 
@@ -46,7 +50,7 @@ Check `--help` or `-h` for manual.
 
 ### Usage process
 
-There's `stylish` and `plain` usage.
+There's `stylish` and `plain` usage
 
 [![asciicast](https://asciinema.org/a/512158.svg)](https://asciinema.org/a/512158)
 

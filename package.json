@@ -4,9 +4,9 @@
   "type": "module",
   "description": "Differnces Generator as the second project on Hexlet ",
   "bin": {
-    "gendiff": "../bin/gendiff.js"
+    "gendiff": "bin/gendiff.js"
   },
-  "main": "./src/gendiff.js",
+  "main": "src/gendiff.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },

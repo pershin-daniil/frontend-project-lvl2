@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import _ from 'lodash';
 import { DIFF_TYPE } from '../constants.js';
 
@@ -9,7 +8,7 @@ function stringify(value, depth) {
   if (!_.isObject(value)) {
     return String(value);
   }
-  const toString = ([key, val]) => getStylish(key, val, ' ', depth);
+  const toString = ([key, val]) => `${indent(depth)}  ${key}: ${stringify(val, depth + 1)}`;
   const output = Object.entries(value).map(toString);
   return wrap(output, depth);
 }
@@ -17,18 +16,18 @@ const getStylish = (key, value, token, depth) => `${indent(depth)}${token} ${key
 
 const format = (nodes, depth) => {
   const toStylish = ({
-    key, type, value, subValue, children,
+    key, type, value, ...nodeRest
   }) => {
-    const nestedValue = (children.length) ? format(children, depth + 1) : value;
+    const nestedValue = _.has(nodeRest, 'children') ? format(nodeRest.children, depth + 1) : value;
     switch (type) {
       case DIFF_TYPE.ADDED:
-        return getStylish(key, subValue, '+', depth);
+        return getStylish(key, value, '+', depth);
       case DIFF_TYPE.DELETED:
         return getStylish(key, value, '-', depth);
       case DIFF_TYPE.UPDATED:
         return [
-          getStylish(key, value, '-', depth),
-          getStylish(key, subValue, '+', depth),
+          getStylish(key, nodeRest.value1, '-', depth),
+          getStylish(key, nodeRest.value2, '+', depth),
         ].join('\n');
       case DIFF_TYPE.NESTED:
       case DIFF_TYPE.NO_DIFF:
@@ -40,4 +39,4 @@ const format = (nodes, depth) => {
   const output = nodes.map(toStylish);
   return wrap(output, depth);
 };
-export default (innerTree = []) => (innerTree.length ? format(innerTree, 0) : '');
+export default (innerTree) => format(innerTree, 0);

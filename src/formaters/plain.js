@@ -8,27 +8,21 @@ const stringify = (value) => {
   return String(value);
 };
 
-const format = (innerTree, path) => {
-  const toString = ({
-    key, type, value, subValue, children,
-  }) => {
-    const property = path ? `${path}.${key}` : key;
-    switch (type) {
-      case DIFF_TYPE.ADDED:
-        return `Property '${property}' was added with value: ${stringify(subValue)}`;
-      case DIFF_TYPE.DELETED:
-        return `Property '${property}' was removed`;
-      case DIFF_TYPE.UPDATED:
-        return `Property '${property}' was updated. From ${stringify(value)} to ${stringify(subValue)}`;
-      case DIFF_TYPE.NESTED:
-        return format(children, property);
-      case DIFF_TYPE.NO_DIFF:
-        return format(children, property);
-      default:
-        throw new Error(`Unknown inner tree node type ${type}`);
-    }
+const format = (innerTree, ancestors = []) => {
+  const toString = {
+    [DIFF_TYPE.ADDED]: ({ value }, path) => `Property '${path.join('.')}' was added with value: ${stringify(value)}`,
+    [DIFF_TYPE.DELETED]: (node, path) => `Property '${path.join('.')}' was removed`,
+    [DIFF_TYPE.UPDATED]: ({ value1, value2 }, path) => `Property '${path.join('.')}' was updated. From ${stringify(value1)} to ${stringify(value2)}`,
+    [DIFF_TYPE.NESTED]: ({ children }, path) => format(children, path),
+    [DIFF_TYPE.NO_DIFF]: () => null,
   };
-  return innerTree.flatMap(toString);
+  const result = innerTree.map((node) => {
+    const { key, type } = node;
+    const newPath = [...ancestors, key];
+    return toString[type](node, newPath);
+  });
+
+  return _.compact(_.flatten(result)).join('\n');
 };
 
-export default (innerTree = []) => format(innerTree, '').join('\n');
+export default format;

@@ -1,1 +1,1 @@
-export default (innerTree = []) => (innerTree.length ? JSON.stringify(innerTree, null, 2) : '');
+export default (innerTree) => JSON.stringify(innerTree, null, 2);

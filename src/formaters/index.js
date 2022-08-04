@@ -1,4 +1,3 @@
-import { strict as assert } from 'assert';
 import { FORMAT_NAME } from '../constants.js';
 import stylish from './stylish.js';
 import plain from './plain.js';
@@ -11,10 +10,13 @@ const formaters = {
 };
 
 export const availableFormats = Object.keys(formaters);
-const errorMessage = (formatName) => `The ${formatName} format is not available`;
 
-export default (innerTree, formatName = FORMAT_NAME.STYLISH) => {
-  assert(availableFormats.includes(formatName), errorMessage);
-  const format = formaters[formatName];
-  return format(innerTree);
+const format = (innerTree, formatName = FORMAT_NAME.STYLISH) => {
+  if (!availableFormats.includes(formatName)) {
+    throw new Error(`The ${formatName} format is not available`);
+  }
+  const render = formaters[formatName];
+  return render(innerTree);
 };
+
+export default format;

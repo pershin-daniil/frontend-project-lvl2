@@ -1,123 +1,66 @@
 [
   {
     "key": "common",
-    "value": {
-      "setting1": "Value 1",
-      "setting2": 200,
-      "setting3": true,
-      "setting6": {
-        "key": "value",
-        "doge": {
-          "wow": ""
-        }
-      }
-    },
-    "subValue": {
-      "follow": false,
-      "setting1": "Value 1",
-      "setting3": null,
-      "setting4": "blah blah",
-      "setting5": {
-        "key5": "value5"
-      },
-      "setting6": {
-        "key": "value",
-        "ops": "vops",
-        "doge": {
-          "wow": "so much"
-        }
-      }
-    },
     "type": "nested",
     "children": [
       {
         "key": "follow",
-        "subValue": false,
-        "type": "added",
-        "children": []
+        "value": false,
+        "type": "added"
       },
       {
         "key": "setting1",
         "value": "Value 1",
-        "subValue": "Value 1",
-        "type": "nodiff",
-        "children": []
+        "type": "nodiff"
       },
       {
         "key": "setting2",
         "value": 200,
-        "type": "deleted",
-        "children": []
+        "type": "deleted"
       },
       {
         "key": "setting3",
-        "value": true,
-        "subValue": null,
-        "type": "updated",
-        "children": []
+        "value1": true,
+        "value2": null,
+        "type": "updated"
       },
       {
         "key": "setting4",
-        "subValue": "blah blah",
-        "type": "added",
-        "children": []
+        "value": "blah blah",
+        "type": "added"
       },
       {
         "key": "setting5",
-        "subValue": {
+        "value": {
           "key5": "value5"
         },
-        "type": "added",
-        "children": []
+        "type": "added"
       },
       {
         "key": "setting6",
-        "value": {
-          "key": "value",
-          "doge": {
-            "wow": ""
-          }
-        },
-        "subValue": {
-          "key": "value",
-          "ops": "vops",
-          "doge": {
-            "wow": "so much"
-          }
-        },
         "type": "nested",
         "children": [
           {
             "key": "doge",
-            "value": {
-              "wow": ""
-            },
-            "subValue": {
-              "wow": "so much"
-            },
             "type": "nested",
             "children": [
               {
                 "key": "wow",
-                "value": "",
-                "subValue": "so much",
-                "type": "updated",
-                "children": []
+                "value1": "",
+                "value2": "so much",
+                "type": "updated"
               }
             ]
           },
           {
             "key": "key",
             "value": "value",
-            "subValue": "value",
-            "type": "nodiff",
-            "children": []
+            "type": "nodiff"
           },
           {
             "key": "ops",
-            "subValue": "vops",
-            "type": "added",
-            "children": []
+            "value": "vops",
+            "type": "added"
           }
         ]
       }
@@ -125,42 +68,26 @@
   },
   {
     "key": "group1",
-    "value": {
-      "baz": "bas",
-      "foo": "bar",
-      "nest": {
-        "key": "value"
-      }
-    },
-    "subValue": {
-      "foo": "bar",
-      "baz": "bars",
-      "nest": "str"
-    },
     "type": "nested",
     "children": [
       {
         "key": "baz",
-        "value": "bas",
-        "subValue": "bars",
-        "type": "updated",
-        "children": []
+        "value1": "bas",
+        "value2": "bars",
+        "type": "updated"
       },
       {
         "key": "foo",
         "value": "bar",
-        "subValue": "bar",
-        "type": "nodiff",
-        "children": []
+        "type": "nodiff"
       },
       {
         "key": "nest",
-        "value": {
+        "value1": {
           "key": "value"
         },
-        "subValue": "str",
-        "type": "updated",
-        "children": []
+        "value2": "str",
+        "type": "updated"
       }
     ]
   },
@@ -172,12 +99,11 @@
         "id": 45
       }
     },
-    "type": "deleted",
-    "children": []
+    "type": "deleted"
   },
   {
     "key": "group3",
-    "subValue": {
+    "value": {
       "deep": {
         "id": {
           "number": 45
@@ -185,7 +111,6 @@
       },
       "fee": 100500
     },
-    "type": "added",
-    "children": []
+    "type": "added"
   }
 ]
