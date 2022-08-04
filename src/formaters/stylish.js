@@ -16,9 +16,9 @@ const getStylish = (key, value, token, depth) => `${indent(depth)}${token} ${key
 
 const format = (nodes, depth) => {
   const toStylish = ({
-    key, type, value, ...nodeRest
+    key, type, value, children, value1, value2,
   }) => {
-    const nestedValue = _.has(nodeRest, 'children') ? format(nodeRest.children, depth + 1) : value;
+    const nestedValue = !_.isUndefined(children) ? format(children, depth + 1) : value;
     switch (type) {
       case DIFF_TYPE.ADDED:
         return getStylish(key, value, '+', depth);
@@ -26,8 +26,8 @@ const format = (nodes, depth) => {
         return getStylish(key, value, '-', depth);
       case DIFF_TYPE.UPDATED:
         return [
-          getStylish(key, nodeRest.value1, '-', depth),
-          getStylish(key, nodeRest.value2, '+', depth),
+          getStylish(key, value1, '-', depth),
+          getStylish(key, value2, '+', depth),
         ].join('\n');
       case DIFF_TYPE.NESTED:
       case DIFF_TYPE.NO_DIFF:
