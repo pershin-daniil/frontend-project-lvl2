@@ -2,7 +2,10 @@ import _ from 'lodash';
 import { DIFF_TYPE } from '../constants.js';
 
 const indent = (depth, spaceCount = 4) => ' '.repeat(spaceCount * depth + 2);
-const wrap = (output, depth) => `{\n${output.join('\n')}\n${indent(depth).substring(2)}}`;
+const wrap = (output, depth) => {
+  if (_.isEqual(output, [])) return '';
+  return `{\n${output.join('\n')}\n${indent(depth).substring(2)}}`;
+};
 
 function stringify(value, depth) {
   if (!_.isObject(value)) {
@@ -39,4 +42,4 @@ const format = (nodes, depth) => {
   const output = nodes.map(toStylish);
   return wrap(output, depth);
 };
-export default (innerTree = []) => (innerTree.length ? format(innerTree, 0) : '');
+export default (innerTree) => format(innerTree, 0);
