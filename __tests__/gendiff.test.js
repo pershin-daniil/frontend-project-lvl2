@@ -1,9 +1,9 @@
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import gendiff from '../src/gendiff';
-import { readFile } from '../src/utils';
+import gendiff from '../src/index.js';
+import { readFile } from '../src/utils.js';
 import { availableFormats } from '../src/formaters/index.js';
-import { FILE_TYPE } from '../src/constants';
+import { FILE_TYPE } from '../src/constants.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,11 +20,4 @@ describe('test with different files', () => {
       const expected = readFile(getAbsolutPath(formatName));
       expect(actual).toEqual(expected);
     });
-});
-test('with empty files', () => {
-  const filePath1 = getAbsolutPath('empty.json');
-  const filePath2 = getAbsolutPath('empty.yaml');
-  const actual = gendiff(filePath1, filePath2);
-  const expected = readFile(getAbsolutPath('empty'));
-  expect(actual).toEqual(expected);
 });

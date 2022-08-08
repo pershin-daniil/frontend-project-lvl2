@@ -12,7 +12,8 @@ const formaters = {
 export const availableFormats = Object.keys(formaters);
 
 const format = (innerTree, formatName = FORMAT_NAME.STYLISH) => {
-  if (!availableFormats.includes(formatName)) {
+  const formater = formaters[formatName];
+  if (!formater) {
     throw new Error(`The ${formatName} format is not available`);
   }
   const render = formaters[formatName];

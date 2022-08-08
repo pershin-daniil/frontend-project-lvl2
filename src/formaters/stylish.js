@@ -18,25 +18,24 @@ function stringify(value, depth) {
 const getStylish = (key, value, token, depth) => `${indent(depth)}${token} ${key}: ${stringify(value, depth + 1)}`;
 
 const format = (nodes, depth) => {
-  const toStylish = ({
-    key, type, value, children, value1, value2,
-  }) => {
-    const nestedValue = !_.isUndefined(children) ? format(children, depth + 1) : value;
-    switch (type) {
+  const toStylish = (node) => {
+    const isNested = node.type === DIFF_TYPE.NESTED;
+    const nestedValue = isNested ? format(node.children, depth + 1) : node.value;
+    switch (node.type) {
       case DIFF_TYPE.ADDED:
-        return getStylish(key, value, '+', depth);
+        return getStylish(node.key, node.value, '+', depth);
       case DIFF_TYPE.DELETED:
-        return getStylish(key, value, '-', depth);
+        return getStylish(node.key, node.value, '-', depth);
       case DIFF_TYPE.UPDATED:
         return [
-          getStylish(key, value1, '-', depth),
-          getStylish(key, value2, '+', depth),
+          getStylish(node.key, node.value1, '-', depth),
+          getStylish(node.key, node.value2, '+', depth),
         ].join('\n');
       case DIFF_TYPE.NESTED:
       case DIFF_TYPE.NO_DIFF:
-        return getStylish(key, nestedValue, ' ', depth);
+        return getStylish(node.key, nestedValue, ' ', depth);
       default:
-        throw new Error(`Unknown node type: ${type}`);
+        throw new Error(`Unknown node type: ${node.type}`);
     }
   };
   const output = nodes.map(toStylish);
