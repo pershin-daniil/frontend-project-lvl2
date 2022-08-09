@@ -14,8 +14,10 @@ const buildTree = (data1, data2) => {
         return {
           key, value1: data1[key], value2: data2[key], type: DIFF_TYPE.UPDATED,
         };
-      default:
+      case _.isEqual(data1[key], data2[key]):
         return { key, value: data1[key], type: DIFF_TYPE.NO_DIFF };
+      default:
+        throw new Error(`Unknown state case ${key} in buildTree`);
     }
   };
   const unionKeys = _.union(Object.keys(data1), Object.keys(data2));

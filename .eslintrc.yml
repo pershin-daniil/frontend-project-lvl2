@@ -1,5 +1,4 @@
 env:
-  browser: true
   es2021: true
   jest: true
 extends:
@@ -11,12 +10,4 @@ rules: {
     no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }],
     no-console: ["off", { "allow": ["warn"] }],
     import/extensions: ["off", "always"],
-    no-restricted-syntax:
-      [
-        "error",
-        {
-          "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
-          "message": "Unexpected property on console object was called",
-        },
-      ],
   }

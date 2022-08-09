@@ -2,24 +2,17 @@ import yaml from 'js-yaml';
 import { FILE_TYPE } from './constants.js';
 
 const parsers = {
-  [FILE_TYPE.JSON]: (content) => {
-    if (content) {
-      return JSON.parse(content);
-    }
-    throw new Error('Unvalid data JSON');
-  },
-  [FILE_TYPE.YAML]: (content) => {
-    if (content) {
-      return yaml.load(content);
-    }
-    throw new Error('Unvalid data YAML');
-  },
-  [FILE_TYPE.YML]: (content) => {
-    if (content) {
-      return yaml.load(content);
-    }
-    throw new Error('Unvalid data YML');
-  },
+  [FILE_TYPE.JSON]: JSON.parse,
+  [FILE_TYPE.YAML]: yaml.load,
+  [FILE_TYPE.YML]: yaml.load,
 };
+export const availableParsers = Object.keys(parsers);
 
-export default (content, typeName) => parsers[typeName](content);
+export default (content, typeName) => {
+  if (!content) throw new Error('Unvalid data');
+  const parser = parsers[typeName];
+  if (!parser) {
+    throw new Error(`File type ${typeName} unavailable`);
+  }
+  return parser(content);
+};
