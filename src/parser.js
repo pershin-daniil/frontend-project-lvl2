@@ -6,13 +6,11 @@ const parsers = {
   [FILE_TYPE.YAML]: yaml.load,
   [FILE_TYPE.YML]: yaml.load,
 };
-export const availableParsers = Object.keys(parsers);
 
 export default (content, typeName) => {
-  if (!content) throw new Error('Unvalid data');
-  const parser = parsers[typeName];
-  if (!parser) {
+  const parse = parsers[typeName];
+  if (!parse) {
     throw new Error(`File type ${typeName} unavailable`);
   }
-  return parser(content);
+  return parse(content);
 };

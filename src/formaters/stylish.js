@@ -14,27 +14,31 @@ function stringify(value, depth) {
 }
 const getStylish = (key, value, token, depth) => `${indent(depth)}${token} ${key}: ${stringify(value, depth + 1)}`;
 
-const format = (nodes, depth) => {
-  const toStylish = (node) => {
-    switch (node.type) {
-      case DIFF_TYPE.ADDED:
-        return getStylish(node.key, node.value, '+', depth);
-      case DIFF_TYPE.DELETED:
-        return getStylish(node.key, node.value, '-', depth);
-      case DIFF_TYPE.UPDATED:
-        return [
-          getStylish(node.key, node.value1, '-', depth),
-          getStylish(node.key, node.value2, '+', depth),
-        ].join('\n');
-      case DIFF_TYPE.NESTED:
-        return getStylish(node.key, format(node.children, depth + 1), ' ', depth);
-      case DIFF_TYPE.NO_DIFF:
-        return getStylish(node.key, node.value, ' ', depth);
-      default:
-        throw new Error(`Unknown node type: ${node.type}`);
-    }
+const format = (tree) => {
+  const iter = (nodes, depth) => {
+    const toStylish = (node) => {
+      switch (node.type) {
+        case DIFF_TYPE.ADDED:
+          return getStylish(node.key, node.value, '+', depth);
+        case DIFF_TYPE.DELETED:
+          return getStylish(node.key, node.value, '-', depth);
+        case DIFF_TYPE.UPDATED:
+          return [
+            getStylish(node.key, node.value1, '-', depth),
+            getStylish(node.key, node.value2, '+', depth),
+          ].join('\n');
+        case DIFF_TYPE.NESTED:
+          return getStylish(node.key, iter(node.children, depth + 1), ' ', depth);
+        case DIFF_TYPE.NO_DIFF:
+          return getStylish(node.key, node.value, ' ', depth);
+        default:
+          throw new Error(`Unknown node type: ${node.type}`);
+      }
+    };
+    const output = nodes.map(toStylish);
+    return wrap(output, depth);
   };
-  const output = nodes.map(toStylish);
-  return wrap(output, depth);
+  return iter(tree, 0);
 };
-export default (innerTree) => format(innerTree, 0);
+
+export default format;

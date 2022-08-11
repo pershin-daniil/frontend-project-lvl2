@@ -2,20 +2,18 @@ import { FORMAT_NAME } from '../constants.js';
 import stylish from './stylish.js';
 import plain from './plain.js';
 
-const formaters = {
+export const formatters = {
   [FORMAT_NAME.STYLISH]: stylish,
   [FORMAT_NAME.PLAIN]: plain,
   [FORMAT_NAME.JSON]: JSON.stringify,
 };
 
-export const availableFormats = Object.keys(formaters);
-
-const format = (formatName) => {
-  const formater = formaters[formatName];
-  if (!formater) {
+const form = (formatName) => {
+  const format = formatters[formatName];
+  if (!format) {
     throw new Error(`The ${formatName} format is not available`);
   }
-  return formater;
+  return format;
 };
 
-export default (innerTree, formatName = FORMAT_NAME.STYLISH) => format(formatName)(innerTree);
+export default (innerTree, formatName = FORMAT_NAME.STYLISH) => form(formatName)(innerTree);
