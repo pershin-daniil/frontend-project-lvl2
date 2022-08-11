@@ -22,11 +22,10 @@ describe('test with different files and formaters', () => {
       const filePath2 = getAbsolutePath(`file2.${extension}`);
       const actual = gendiff(filePath1, filePath2, formatName);
       const actualDefault = gendiff(filePath1, filePath2);
+      const expectedDefault = readFile(getAbsolutePath('stylish'));
       const expected = readFile(getAbsolutePath(formatName));
       expect(actual).toEqual(expected);
-      if (formatName === 'stylish') {
-        expect(actualDefault).toEqual(expected);
-      }
+      expect(actualDefault).toEqual(expectedDefault);
     });
 });
 
