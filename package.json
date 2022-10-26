@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pppershin/frontend-project-lvl2.git"
+    "url": "git+https://github.com/pershin-daniil/frontend-project-lvl2.git"
   },
   "author": "Daniil Pershin <pershin.daniil.e@gmail.com> (https://github.com/pershin-daniil)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/pppershin/frontend-project-lvl2/issues"
+    "url": "https://github.com/pershin-daniil/frontend-project-lvl2/issues"
   },
-  "homepage": "https://github.com/pppershin/frontend-project-lvl2#readme",
+  "homepage": "https://github.com/pershin-daniil/frontend-project-lvl2#readme",
   "dependencies": {
     "commander": "^9.3.0",
     "js-yaml": "^4.1.0",
